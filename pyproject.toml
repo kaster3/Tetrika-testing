@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "tetrika-test"
+version = "0.1.0"
+description = ""
+authors = ["Fedorov Semen <FedorovSemen28@yandex.ru>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+aiohttp = "^3.11.7"
+bs4 = "^0.0.2"
+lxml = "^5.3.0"
+pytest = "^8.3.3"
+pytest-asyncio = "^0.24.0"
+
+[tool.pytest.ini_options]
+filterwarnings = [
+    "ignore:The 'strip_cdata' option of HTMLParser:DeprecationWarning"
+]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
