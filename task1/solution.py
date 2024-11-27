@@ -1,8 +1,10 @@
 import functools
+from typing import Callable
 
-def strict(func):
+
+def strict(func) -> Callable:
     @functools.wraps(func)
-    def wrapped(*args, **kwargs):
+    def wrapped(*args, **kwargs) -> Callable:
         annotations = func.__annotations__
 
         for count, (arg_name, expected_type) in enumerate(annotations.items()):
