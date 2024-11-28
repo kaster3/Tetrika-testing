@@ -4,7 +4,6 @@ import logging
 import time
 from collections import Counter
 from collections.abc import Callable
-from typing import Any
 
 import aiohttp
 from aiohttp import ClientSession, ClientError
@@ -21,8 +20,8 @@ def timer(func) -> Callable:
     return wrapper
 
 
-def write_result_csv(result: list[tuple[Any, int]]) -> None:
-    with open("beasts.csv", "w", encoding="utf-8-sig", newline="") as file:
+def write_result_csv(result: list[tuple[str, int]], name: str = "beasts.csv") -> None:
+    with open(name, "w", encoding="utf-8-sig", newline="") as file:
         writer = csv.writer(file, delimiter=",", dialect="excel")
         for string in result:
             writer.writerow(string)
