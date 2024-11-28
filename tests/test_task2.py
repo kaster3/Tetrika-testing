@@ -1,6 +1,11 @@
+import csv
+import os
+
 import pytest
+import tempfile
 from unittest.mock import patch, AsyncMock
-from task2.solution import WikiParser
+
+from task2.solution import WikiParser, write_result_csv
 from aiohttp import ClientSession
 from bs4 import BeautifulSoup
 
@@ -48,3 +53,14 @@ class TestWikiParser:
             assert url in parser.next_pages
         else:
             assert url not in parser.next_pages
+
+
+    def test_write_result_csv(self):
+        data = [("A", 10), ("B", 20)]
+        with tempfile.NamedTemporaryFile(delete=True, mode='w', encoding='utf-8-sig', newline='') as temp_file:
+            temp_file_name = temp_file.name
+            write_result_csv(result=data, name=temp_file_name)
+            with open(temp_file_name, 'r', encoding='utf-8-sig') as file:
+                reader = csv.reader(file)
+                contents = list(reader)
+            assert contents == [["A", "10"], ["B", "20"]]
