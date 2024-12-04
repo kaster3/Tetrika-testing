@@ -10,6 +10,9 @@ from aiohttp import ClientSession, ClientError
 from bs4 import BeautifulSoup
 
 
+FILE_NAME = "beasts.csv"
+
+
 def timer(func) -> Callable:
     async def wrapper(*args, **kwargs) -> Callable:
         start_time = time.time()
@@ -20,7 +23,7 @@ def timer(func) -> Callable:
     return wrapper
 
 
-def write_result_csv(result: list[tuple[str, int]], name: str = "beasts.csv") -> None:
+def write_result_csv(result: list[tuple[str, int]], name: str = FILE_NAME) -> None:
     with open(name, "w", encoding="utf-8-sig", newline="") as file:
         writer = csv.writer(file, delimiter=",", dialect="excel")
         for string in result:
@@ -120,9 +123,7 @@ async def main(parser: WikiParser):
     async with (aiohttp.ClientSession() as session):
         log.info("Начинаем парсить wiki, займет примерно 20 секунд...")
         first_page = await parser.get_page_data(session=session, url=parser.start_page)
-        pages = parser.get_pages(soup=first_page)
-        parser.next_pages = pages[0]
-        parser.start_points = pages[1]
+        parser.next_pages, parser.start_points = parser.get_pages(soup=first_page)
 
         while parser.next_pages:
             tasks_1 = [
